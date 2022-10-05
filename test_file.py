@@ -3,3 +3,6 @@
 
 #testing git push with vscode
 monkey = "Abc"
+
+something = 45
+print(monkey, something)
