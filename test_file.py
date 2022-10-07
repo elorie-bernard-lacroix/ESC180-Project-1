@@ -3,6 +3,7 @@
 
 #testing git push with vscode
 monkey = "Abc"
-
 something = 45
-print(monkey, something)
+
+if __name__ == '__main__':
+    print(monkey, something)
