@@ -67,12 +67,17 @@ def purchase(amount, day, month, country):
      The card is becoming disabled due to the current attempted purchase, or is already disabled.
     You may assume that amount is greater than 0 and that country is a valid country name.
     '''
-    
+
+    global cur_balance_owing_recent
+    global last_update_day, last_update_month
+    global last_country, last_country2
+    global card_disabled
+
     # check if card is disabled
     if card_disabled:
         return 'error'
 
-    if date_same_or_later(day, month, last_update_day, last_update_month):
+    if date_same_or_later(last_update_day, last_update_month, day, month):
         card_disabled = True
         return 'error'
     
