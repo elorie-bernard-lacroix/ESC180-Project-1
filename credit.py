@@ -36,13 +36,40 @@ def all_three_different(c1, c2, c3):
         
 def purchase(amount, day, month, country):
     pass
-    
+
+
+# Simulate checking how much money is owed.
+# Return the amount owed.
 def amount_owed(day, month):
-    pass
+    if not date_same_or_later(day, month, last_update_day, last_update_month):
+        return 'error'
+    return cur_balance_owing_intst + cur_balance_owing_recent
     
+
+# Simulate paying the bill.
+# Unclear what to do about cases where the amount is bigger than the owed.
+# Return 'error' for now, but maybe there is specific instruction.   
 def pay_bill(amount, day, month):
-    pass
-        
+    # First check if the day is valid and return 'error' if needed.
+    global cur_balance_owing_intst
+    global cur_balance_owing_recent
+    global last_update_day
+    global last_update_month
+    # Because this depends on last_update_day and last_update_month, every simulation
+    # function MUST update last_update_day and last_update_month.
+    if not date_same_or_later(day, month, last_update_day, last_update_month):
+        return 'error'
+    # Calculate and store the new balances.
+    #cannot pay an amount more than is owed.
+    if amount > cur_balance_owing_intst + cur_balance_owing_recent:
+        return 'error'
+    if cur_balance_owing_intst - amount >= 0:
+        cur_balance_owing_intst -= amount
+    else:
+        cur_balance_owing_recent += (cur_balance_owing_intst - amount)
+        cur_balance_owing_intst = 0
+    last_update_day = day
+    last_update_month = month    
 
 # Initialize all global variables outside the main block.
 initialize()		
