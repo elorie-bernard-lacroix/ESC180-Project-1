@@ -16,7 +16,8 @@ def initialize():
     global last_update_day, last_update_month
     global last_country, last_country2
     global card_disabled
-    
+    global MONTHLY_INTEREST_RATE
+
     cur_balance_owing_intst = 0
     cur_balance_owing_recent = 0
     
@@ -67,7 +68,7 @@ def purchase(amount, day, month, country):
      The card is becoming disabled due to the current attempted purchase, or is already disabled.
     You may assume that amount is greater than 0 and that country is a valid country name.
     '''
-
+    
     global cur_balance_owing_recent
     global last_update_day, last_update_month
     global last_country, last_country2
@@ -101,8 +102,17 @@ def purchase(amount, day, month, country):
 # Simulate checking how much money is owed.
 # Return the amount owed.
 def amount_owed(day, month):
+    global last_update_day
+    global last_update_month
     if not date_same_or_later(day, month, last_update_day, last_update_month):
         return 'error'
+    # check if it's a new month
+    check_new_month(month)
+    
+    #update variables with dates
+    last_update_day = day
+    last_update_month = month
+
     return cur_balance_owing_intst + cur_balance_owing_recent
     
 
@@ -115,10 +125,14 @@ def pay_bill(amount, day, month):
     global cur_balance_owing_recent
     global last_update_day
     global last_update_month
+    # First check if the day is valid and return 'error' if needed.
     # Because this depends on last_update_day and last_update_month, every simulation
     # function MUST update last_update_day and last_update_month.
     if not date_same_or_later(day, month, last_update_day, last_update_month):
         return 'error'
+    
+    # check if it's a new month
+def check_new_month(month):
     # Calculate and store the new balances.
     #cannot pay an amount more than is owed.
     if amount > cur_balance_owing_intst + cur_balance_owing_recent:
@@ -128,6 +142,8 @@ def pay_bill(amount, day, month):
     else:
         cur_balance_owing_recent += (cur_balance_owing_intst - amount)
         cur_balance_owing_intst = 0
+    
+    # update variables with dates
     last_update_day = day
     last_update_month = month    
 
