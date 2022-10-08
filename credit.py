@@ -27,14 +27,43 @@ def initialize():
     MONTHLY_INTEREST_RATE = 0.05
 
 def date_same_or_later(day1, month1, day2, month2):
-    pass
+    '''This function returns True iff the date (day1, month1) is the same as the date (day2, month2), 
+    or occurs later than (day2, month2). This will accept the month and days as integers only.
+    Assume the dates given are valid dates in the year 2020.'''
+
+    if month1 > month2:
+        return True
+
+    if month1 == month2:
+        if day1 >= day2:
+            return True
+        return False
+
+    return False
+
     
 def all_three_different(c1, c2, c3):
-    pass
+    '''This function returns True iff the values of the three strings c1, c2, and c3 are all different from each
+    other.'''
+
+    if c1 == c2 or c2 == c3 or c3 == c1:
+        return False
+
+    return True
         
     
         
 def purchase(amount, day, month, country):
+    '''
+    This function simulates a purchase of amount amount, on the date (day, month), in the country country
+    (given as a capitalized string). The function should return the string "error" and not have any other
+    effect (except for possibly disabling the card) if any of the following conditions obtain:
+
+     There already was a simulation operation on a date later than (day, month) (e.g., a purchase or a
+    check for the amount owed).
+     The card is becoming disabled due to the current attempted purchase, or is already disabled.
+    You may assume that amount is greater than 0 and that country is a valid country name.
+    '''
     pass
     
 def amount_owed(day, month):
