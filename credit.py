@@ -15,6 +15,7 @@ def initialize():
     global cur_balance_owing_intst, cur_balance_owing_recent
     global last_update_day, last_update_month
     global last_country, last_country2
+    global card_disabled
     
     cur_balance_owing_intst = 0
     cur_balance_owing_recent = 0
@@ -22,20 +23,74 @@ def initialize():
     last_update_day, last_update_month = -1, -1
     
     last_country = None
-    last_country2 = None    
+    last_country2 = None 
+
+    card_disabled = False   
     
     MONTHLY_INTEREST_RATE = 0.05
 
 def date_same_or_later(day1, month1, day2, month2):
-    pass
+    '''This function returns True iff the date (day1, month1) is the same as the date (day2, month2), 
+    or occurs later than (day2, month2). This will accept the month and days as integers only.
+    Assume the dates given are valid dates in the year 2020.'''
+
+    if month1 > month2:
+        return True
+
+    if month1 == month2:
+        if day1 >= day2:
+            return True
+        return False
+
+    return False
+
     
 def all_three_different(c1, c2, c3):
-    pass
+    '''This function returns True iff the values of the three strings c1, c2, and c3 are all different from each
+    other.'''
+
+    if c1 == c2 or c2 == c3 or c3 == c1:
+        return False
+
+    return True
         
     
         
 def purchase(amount, day, month, country):
-    pass
+    '''
+    This function simulates a purchase of amount amount, on the date (day, month), in the country country
+    (given as a capitalized string). The function should return the string "error" and not have any other
+    effect (except for possibly disabling the card) if any of the following conditions obtain:
+
+     There already was a simulation operation on a date later than (day, month) (e.g., a purchase or a
+    check for the amount owed).
+     The card is becoming disabled due to the current attempted purchase, or is already disabled.
+    You may assume that amount is greater than 0 and that country is a valid country name.
+    '''
+    
+    # check if card is disabled
+    if card_disabled:
+        return 'error'
+
+    if date_same_or_later(day, month, last_update_day, last_update_month):
+        card_disabled = True
+        return 'error'
+    
+    # check if there have been three consecutive different country purchases
+    if country != last_country and country != last_country2 and last_country != last_country2:
+        card_disabled = True
+        return 'error'
+
+    # update record of country
+    last_country2 = last_country
+    last_country = country
+
+    # update variables with dates
+    last_update_day = day
+    last_update_month = month
+
+    # process payment and add it to the current amount owed
+    cur_balance_owing_recent += amount        
 
 
 # Simulate checking how much money is owed.
