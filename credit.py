@@ -15,6 +15,7 @@ def initialize():
     global cur_balance_owing_intst, cur_balance_owing_recent
     global last_update_day, last_update_month
     global last_country, last_country2
+    global card_disabled
     
     cur_balance_owing_intst = 0
     cur_balance_owing_recent = 0
@@ -22,7 +23,9 @@ def initialize():
     last_update_day, last_update_month = -1, -1
     
     last_country = None
-    last_country2 = None    
+    last_country2 = None 
+
+    card_disabled = False   
     
     MONTHLY_INTEREST_RATE = 0.05
 
@@ -64,7 +67,30 @@ def purchase(amount, day, month, country):
      The card is becoming disabled due to the current attempted purchase, or is already disabled.
     You may assume that amount is greater than 0 and that country is a valid country name.
     '''
-    pass
+    
+    # check if card is disabled
+    if card_disabled:
+        return 'error'
+
+    if date_same_or_later(day, month, last_update_day, last_update_month):
+        card_disabled = True
+        return 'error'
+    
+    # check if there have been three consecutive different country purchases
+    if country != last_country and country != last_country2 and last_country != last_country2:
+        card_disabled = True
+        return 'error'
+
+    # update record of country
+    last_country2 = last_country
+    last_country = country
+
+    # update variables with dates
+    last_update_day = day
+    last_update_month = month
+
+    # process payment and add it to the current amount owed
+    cur_balance_owing_recent += amount        
 
 
 # Simulate checking how much money is owed.
