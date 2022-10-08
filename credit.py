@@ -116,10 +116,12 @@ def amount_owed(day, month):
     last_update_month = month
 
     return cur_balance_owing_intst + cur_balance_owing_recent
-    
+
+# checks if the simulation function occurs in a new month, and adds the appropriate interest.    
 def check_new_month(month):
     global cur_balance_owing_intst
     global cur_balance_owing_recent
+    # initially considers for the first month that passes, then adds (or rather, multiplies) the subsequent interests 
     if month > last_update_month:
         cur_balance_owing_intst *= (1 + MONTHLY_INTEREST_RATE)
         cur_balance_owing_intst += cur_balance_owing_recent
