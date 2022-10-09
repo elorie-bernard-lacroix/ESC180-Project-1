@@ -82,13 +82,15 @@ def purchase(amount, day, month, country):
         card_disabled = True
         return 'error'
 
-    check_new_month(month)
+    
     
     # check if there have been three consecutive different country purchases
-    if country != last_country and country != last_country2 and last_country != last_country2:
+    if last_country2 == None:
+        pass
+    elif country != last_country and country != last_country2 and last_country != last_country2:
         card_disabled = True
         return 'error'
-
+    check_new_month(month)
     # update record of country
     last_country2 = last_country
     last_country = country
@@ -144,11 +146,12 @@ def pay_bill(amount, day, month):
         return 'error'
     
     # check if it's a new month
-    check_new_month(month)
+    
     # Calculate and store the new balances.
     #cannot pay an amount more than is owed.
     if amount > cur_balance_owing_intst + cur_balance_owing_recent:
         return 'error'
+    check_new_month(month)
     if cur_balance_owing_intst - amount >= 0:
         cur_balance_owing_intst -= amount
     else:
