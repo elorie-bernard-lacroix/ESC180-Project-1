@@ -141,7 +141,7 @@ def test7():
     if round(credit.amount_owed(31, 12), 5) != 102.10253:
         return False
     return True
-    #if round"Now owing:", credit.amount_owed(15, 6))  # 80
+    #if round"Now owing:", credit.am7ount_owed(15, 6))  # 80
     #if round"Now owing:", credit.amount_owed(31, 12))  # 80->80->84->88.2->92.61->97.2405->102.102525
 
 # buy once, buy again in early june, pay in june (slightly more than jan debt+interest), check in december

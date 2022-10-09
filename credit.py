@@ -85,9 +85,8 @@ def purchase(amount, day, month, country):
     
     
     # check if there have been three consecutive different country purchases
-    if last_country2 == None:
-        pass
-    elif country != last_country and country != last_country2 and last_country != last_country2:
+
+    if country != last_country and country != last_country2 and (last_country != last_country2 and last_country2 != None):
         card_disabled = True
         return 'error'
     check_new_month(month)
