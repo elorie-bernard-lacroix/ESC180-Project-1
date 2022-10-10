@@ -43,9 +43,9 @@ def randomAmount(upper_bound):
 def buyAndPay(day, month, country, n):
     starting_cur = credit.amount_owed(day, month)
     for i in range(n):
-        amount = randomAmount(credit.amount_owed()) 
+        amount = randomAmount(credit.amount_owed(day, month)) 
         credit.purchase(amount, day, month, country)
-        credit.pay_bill(amount, day, month, country)
+        credit.pay_bill(amount, day, month)
     if starting_cur == credit.amount_owed(day, month):
         return True
     return False
@@ -90,17 +90,21 @@ def test_date_same_or_later(num_of_trials):
         randDay2 = randomDay(randMonth, 2020)
         print(randDay, randMonth, randDay2, randMonth2, credit.date_same_or_later(randDay, randMonth, randDay2, randMonth2))
 
-#test the purchase function at any given time. Arbitrarily max 500 purchase amount and 'Venezuela'
+#test the purchase function at any given time. 
+# Arbitrarily max 500 purchase amount and 'Venezuela'
+# May cause "error" if the chosen random day is before previous actions.
 def test_purchase():
     randMonth = random.randint(1,12)
     randDay = randomDay(randMonth, 2020)
     country = "Venezuela"
     max_amount = 500
-    purchase_amount = randomAmount(max_amount)
     owed_already = credit.amount_owed(randDay, randMonth)
-    if credit.purchase(randomAmount(max_amount), randDay, randMonth, country) == "error":
+    purchase_amount = randomAmount(max_amount)
+    if credit.purchase(purchase_amount, randDay, randMonth, country) == "error":
         return 'error'
-    if credit.amount_owed() == owed_already + purchase_amount:
+    #print(credit.amount_owed(randDay, randMonth), purchase_amount, owed_already)
+    if credit.amount_owed(randDay, randMonth) == owed_already + purchase_amount:
+        
         return True
     return False
 
@@ -150,4 +154,10 @@ def test_amount_owed():
 
 
 if __name__ == '__main__':
-    pass
+    print(test_amount_owed())
+    print(test_purchase())
+    #credit.purchase(300, 1, 1, "Canada")
+    #print(credit.amount_owed(1,1))
+    credit.initialize()
+    print(buyAndPay(1, 1, "Canada", 100))
+    #test_date_same_or_later(10)

@@ -1,6 +1,3 @@
-from ast import Return
-from symbol import return_stmt
-from tkinter.tix import Tree
 import credit
 
 numOfTestsPassed = 0
@@ -349,77 +346,95 @@ def test18():
     if round(credit.amount_owed(31, 12), 5) != round(40*(1.05**9), 5):  # 40*1.05**9
         return False
     return True
-
-if test1():
-    numOfTestsPassed += 1
-else:
-    print(1)
-if test2():
-    numOfTestsPassed += 1
-else:
-    print(2)
-if test3():
-    numOfTestsPassed += 1
-else:
-    print(3)
-if test4():
-    numOfTestsPassed += 1
-else:
-    print(4)
-if test5():
-    numOfTestsPassed += 1
-else:
-    print(5)
-if test6():
-    numOfTestsPassed += 1
-else:
-    print(6)
-if test7():
-    numOfTestsPassed += 1
-else:
-    print(7)
-if test8():
-    numOfTestsPassed += 1
-else:
-    print(8)
-if test9():
-    numOfTestsPassed += 1
-else:
-    print(9)
-if test10():
-    numOfTestsPassed += 1
-else:
-    print(10)
-if test11():
-    numOfTestsPassed += 1
-else:
-    print(11)
-if test12():
-    numOfTestsPassed += 1
-else:
-    print(12)
-if test13():
-    numOfTestsPassed += 1
-else:
-    print(13)
-if test14():
-    numOfTestsPassed += 1
-else:
-    print(14)
-if test15():
-    numOfTestsPassed += 1
-else:
-    print(15)
-if test16():
-    numOfTestsPassed += 1    
-else:
-    print(16)
-if test17():
-    numOfTestsPassed += 1
-else:
-    print(17)
-if test18():
-    numOfTestsPassed += 1
-else:
-    print(18)
-print("tests passed:",numOfTestsPassed)
+def test19():
+    credit.initialize()  # reset the code
+    credit.purchase(80, 1, 1, "Canada")
+    credit.purchase(50, 2, 2, "France")
+    credit.pay_bill(90, 3, 2)  # now owe 40 non interest
+    if credit.purchase(30, 3, 1, "Germany") != 'error':
+        return False # should cancel card dispite non allowed date
+    credit.purchase(30, 4, 4, "France")
+    if credit.amount_owed == 'error' or round(credit.amount_owed(31, 3), 5) != 40:
+        return False  # 40 interested money
+    if round(credit.amount_owed(31, 12), 5) != round(40*(1.05**9), 5):  # 40*1.05**9
+        return False
+    return True
+if __name__ == '__main__':
+    print("Tests failed:")
+    if test1():
+        numOfTestsPassed += 1
+    else:
+        print(1)
+    if test2():
+        numOfTestsPassed += 1
+    else:
+        print(2)
+    if test3():
+        numOfTestsPassed += 1
+    else:
+        print(3)
+    if test4():
+        numOfTestsPassed += 1
+    else:
+        print(4)
+    if test5():
+        numOfTestsPassed += 1
+    else:
+        print(5)
+    if test6():
+        numOfTestsPassed += 1
+    else:
+        print(6)
+    if test7():
+        numOfTestsPassed += 1
+    else:
+        print(7)
+    if test8():
+        numOfTestsPassed += 1
+    else:
+        print(8)
+    if test9():
+        numOfTestsPassed += 1
+    else:
+        print(9)
+    if test10():
+        numOfTestsPassed += 1
+    else:
+        print(10)
+    if test11():
+        numOfTestsPassed += 1
+    else:
+        print(11)
+    if test12():
+        numOfTestsPassed += 1
+    else:
+        print(12)
+    if test13():
+        numOfTestsPassed += 1
+    else:
+        print(13)
+    if test14():
+        numOfTestsPassed += 1
+    else:
+        print(14)
+    if test15():
+        numOfTestsPassed += 1
+    else:
+        print(15)
+    if test16():
+        numOfTestsPassed += 1    
+    else:
+        print(16)
+    if test17():
+        numOfTestsPassed += 1
+    else:
+        print(17)
+    if test18():
+        numOfTestsPassed += 1
+    else:
+        print(18)
+    if test19():
+        numOfTestsPassed += 1
+    else:
+        print(19)
+    print("tests passed:",numOfTestsPassed)
