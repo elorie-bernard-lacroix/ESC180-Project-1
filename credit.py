@@ -1,17 +1,9 @@
-"""The Credit Card Simulator starter code
-You should complete every incomplete function,
-and add more functions and variables as needed.
-Ad comments as required.
-
-Note that incomplete functions have 'pass' as the first statement:
-pass is a Python keyword; it is a statement that does nothing.
-This is a placeholder that you should remove once you modify the function.
-
-Author: Michael Guerzhoy.  Last modified: Oct. 3, 2022
+"""
+Last modified on 2022-10-11 by Elorie Bernard-Lacroix and Chaewon Lim
 """
 
-# You should modify initialize()
 def initialize():
+    '''This function initializes all global variables.'''
     global cur_balance_owing_intst, cur_balance_owing_recent
     global last_update_day, last_update_month
     global last_country, last_country2
@@ -50,10 +42,10 @@ def all_three_different(c1, c2, c3):
     '''This function returns True iff the values of the three strings c1, c2, and c3 are all different from each
     other.'''
 
-    if c1 == c2 or c2 == c3 or c3 == c1:
-        return False
+    if c1 != c2 and c2 != c3 and (c3 != c1 and c3 != None):
+        return True
 
-    return True
+    return False
         
     
         
@@ -81,7 +73,7 @@ def purchase(amount, day, month, country):
         return 'error'
 
     # check if there have been three consecutive different country purchases    
-    if country != last_country and country != last_country2 and (last_country != last_country2 and last_country2 != None):
+    if all_three_different(country, last_country, last_country2):
         card_disabled = True
         return 'error'
     
@@ -189,6 +181,3 @@ if __name__ == '__main__':
     print(purchase(150, 3, 5, "Canada"))        # error    (card disabled)
     print("Now owing:", amount_owed(1, 6))      # 85.8364375 
                                                 # (43.65375*1.05+40)
-                                            
-                                            
-    
