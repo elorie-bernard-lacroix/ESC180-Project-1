@@ -75,22 +75,18 @@ def purchase(amount, day, month, country):
     global card_disabled
 
     # check if card is disabled
-    if card_disabled:
-        return 'error'
     # since the disabling of the 3 countries happens regardless of whether 
     # the current purchase is an allowed date or not, check before date.
+    if card_disabled:
+        return 'error'
+
+    # check if there have been three consecutive different country purchases    
     if country != last_country and country != last_country2 and (last_country != last_country2 and last_country2 != None):
         card_disabled = True
         return 'error'
     
     if not date_same_or_later(day, month, last_update_day, last_update_month):
-        # I don't believe that time travel causes the card to be disabled, so I've disabled it for now.
-        # card_disabled = True
         return 'error'
-
-    
-    
-    # check if there have been three consecutive different country purchases
 
     
     check_new_month(month)
