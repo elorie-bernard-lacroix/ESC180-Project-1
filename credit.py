@@ -23,9 +23,11 @@ def initialize():
     MONTHLY_INTEREST_RATE = 0.05
 
 def date_same_or_later(day1, month1, day2, month2):
-    '''This function returns True iff the date (day1, month1) is the same as the date (day2, month2), 
-    or occurs later than (day2, month2). This will accept the month and days as integers only.
-    Assume the dates given are valid dates in the year 2020.'''
+    '''This function accepts 4 input variables: (day1, month1) and (day2, month2) as integers, where
+    both dates are valid dates (for example, (01, 02, 22, 10)). 
+    
+    It will return True if the date (day1, month1) is the same as the date (day2, month2), 
+    or occurs later than (day2, month2).'''
 
     if month1 > month2:
         return True
@@ -39,8 +41,9 @@ def date_same_or_later(day1, month1, day2, month2):
 
     
 def all_three_different(c1, c2, c3):
-    '''This function returns True iff the values of the three strings c1, c2, and c3 are all different from each
-    other.'''
+    '''This function accepts 3 strings as inputs: c1, c2, and c3.
+    
+    It will return True if the values of the three strings are all different.'''
 
     if c1 != c2 and c2 != c3 and (c3 != c1 and c3 != None):
         return True
@@ -51,14 +54,15 @@ def all_three_different(c1, c2, c3):
         
 def purchase(amount, day, month, country):
     '''
-    This function simulates a purchase of amount amount, on the date (day, month), in the country country
-    (given as a capitalized string). The function should return the string "error" and not have any other
-    effect (except for possibly disabling the card) if any of the following conditions obtain:
-
-     There already was a simulation operation on a date later than (day, month) (e.g., a purchase or a
-    check for the amount owed).
-     The card is becoming disabled due to the current attempted purchase, or is already disabled.
-    You may assume that amount is greater than 0 and that country is a valid country name.
+    This function simulates a purchase, updating the 'cur_balance_owing_recent' value. 
+    
+    It accepts the inputs of purchase amount ('amount'), date of purchase (day, month as integers), 
+    and country of the purchase ('country' given as a capitalized string). 
+    
+    It will return 'error' and not execute the purchase if:
+    - the card is disabled
+    - there has been three consecutive purchases in different countries (this will also disable the card)
+    - there has been an update to the account on the same day or later
     '''
     
     global cur_balance_owing_recent
@@ -66,22 +70,22 @@ def purchase(amount, day, month, country):
     global last_country, last_country2
     global card_disabled
 
-    # check if card is disabled
-    # since the disabling of the 3 countries happens regardless of whether 
-    # the current purchase is an allowed date or not, check before date.
+    # return 'error' if card is disabled
     if card_disabled:
         return 'error'
 
-    # check if there have been three consecutive different country purchases    
+    # disable card and return 'error' if there have been three consecutive different country purchases    
     if all_three_different(country, last_country, last_country2):
         card_disabled = True
         return 'error'
     
+    # return 'error' if the purchase date is before the last update date
     if not date_same_or_later(day, month, last_update_day, last_update_month):
         return 'error'
-
     
+    # update the current interest owed, if appropriate
     check_new_month(month)
+
     # update record of country
     last_country2 = last_country
     last_country = country
@@ -136,12 +140,11 @@ def pay_bill(amount, day, month):
     if not date_same_or_later(day, month, last_update_day, last_update_month):
         return 'error'
     
-    # check if it's a new month
-    
     # Calculate and store the new balances.
     #cannot pay an amount more than is owed.
     if amount > cur_balance_owing_intst + cur_balance_owing_recent:
         return 'error'
+    # check if it's a new month
     check_new_month(month)
     if cur_balance_owing_intst - amount >= 0:
         cur_balance_owing_intst -= amount
@@ -157,9 +160,7 @@ def pay_bill(amount, day, month):
 initialize()		
     
 if __name__ == '__main__':
-    # Describe your testing strategy and implement it below.
-    # What you see here is just the simulation from the handout, which
-    # doesn't work yet.
+    # Testing the functions
     initialize()
     purchase(80, 8, 1, "Canada")
     print("Now owing:", amount_owed(8, 1))      # 80.0
